@@ -24,5 +24,6 @@ services:
       MYSQL_DATABASE: americor-test
     volumes:
       - "dbdata_mysql_maria:/var/lib/mysql"
+      - "./conf.d:/etc/mysql/mariadb.conf.d"
     ports:
       - 127.0.0.1:3503:3306

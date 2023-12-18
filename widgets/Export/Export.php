@@ -5,6 +5,9 @@ namespace app\widgets\Export;
 use kartik\export\ExportMenu;
 use Yii;
 
+/**
+ * Runs actual export.
+ */
 class Export extends ExportMenu
 {
     public $exportType = self::FORMAT_CSV;
