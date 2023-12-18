@@ -1,40 +1,27 @@
 <?php
 
-use app\models\search\HistorySearch;
-use yii\data\ActiveDataProvider;
-use yii\helpers\Html;
 use yii\widgets\ListView;
 use yii\widgets\Pjax;
+use app\services\HistoryItemFactory\HistoryListItem;
+use app\services\HistoryItemFactory\HistoryItemFactory;
 
-/* @var $this yii\web\View */
-/* @var $dataProvider ActiveDataProvider */
-/* @var $model HistorySearch */
-/* @var $linkExport string */
-
+/** @var HistoryItemFactory $itemFactory */
+$itemFactory;
 ?>
 
 <?php Pjax::begin(['id' => 'grid-pjax', 'formSelector' => false]); ?>
 
-<div class="panel panel-primary panel-small m-b-0">
-    <div class="panel-body panel-body-selected">
-
-        <div class="pull-sm-right">
-            <?php if (!empty($linkExport)) {
-                echo Html::a(Yii::t('app', 'CSV'), $linkExport,
-                    [
-                        'class' => 'btn btn-success',
-                        'data-pjax' => 0
-                    ]
-                );
-            } ?>
-        </div>
-
-    </div>
-</div>
-
 <?php echo ListView::widget([
     'dataProvider' => $dataProvider,
-    'itemView' => '_item',
+    'itemView' => function($model, $key, $index, $widget) use($itemFactory) {
+        /** @var HistoryListItem $item */
+        $item = $itemFactory->createItem($model);
+
+        return $this->render(
+            $item->getView(), 
+            $item->getParams()
+        );
+    },
     'options' => [
         'tag' => 'ul',
         'class' => 'list-group'
